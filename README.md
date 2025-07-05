@@ -1,2 +1,2 @@
 # Automated-Testing-Using-Cypress
-Author-Abdul Wahab
+Author-Abdul Wahab(Nust)
