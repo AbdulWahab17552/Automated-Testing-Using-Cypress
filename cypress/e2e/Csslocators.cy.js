@@ -4,7 +4,7 @@ describe('CSSLocators', () => {
 
     // Search for "Dress"
     cy.get("#search_query_top").type("Dress");
-    cy.get("submit[name='submit_search']").click();
+    cy.get("[name='submit_search']").click();
     cy.get(".lighter").contains("Dress");
 
     // Go to Sign in
