@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "country": "United States"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "country": "Canada"
+    },
+    {
+      "id": 3,
+      "name": "Bob Johnson",
+      "email": "bob.johnson@example.com",
+      "country": "United Kingdom"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Flutter Widget Kit",
+      "price": 29.99,
+      "description": "Professional widget collection"
+    },
+    {
+      "id": 2,
+      "name": "Dart Extensions",
+      "price": 19.99,
+      "description": "Useful Dart language extensions"
+    }
+  ],
+  "testConfig": {
+    "baseUrl": "http://localhost:8080",
+    "timeout": 10000,
+    "retries": 2
+  },
+  "formData": {
+    "registration": {
+      "firstName": "Test",
+      "lastName": "User",
+      "email": "test@example.com",
+      "password": "TestPassword123!",
+      "confirmPassword": "TestPassword123!"
+    },
+    "login": {
+      "email": "test@example.com",
+      "password": "TestPassword123!"
+    }
+  }
+}

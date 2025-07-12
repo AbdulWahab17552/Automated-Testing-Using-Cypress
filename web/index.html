@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flutter Web App - Cypress Testing</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #2196F3;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .nav {
+      background-color: #1976D2;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .nav button {
+      background-color: transparent;
+      border: 1px solid white;
+      color: white;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .nav button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .content {
+      background-color: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .btn {
+      background-color: #2196F3;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #1976D2;
+    }
+    .loading {
+      text-align: center;
+      padding: 20px;
+    }
+    .error {
+      color: red;
+      padding: 10px;
+      background-color: #ffebee;
+      border-radius: 4px;
+    }
+    .success {
+      color: green;
+      padding: 10px;
+      background-color: #e8f5e8;
+      border-radius: 4px;
+    }
+    .list-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: none;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: black;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Flutter Glass Pane Simulation -->
+  <div id="flutter-view">
+    <flt-glass-pane style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></flt-glass-pane>
+    
+    <div class="container">
+      <div class="header">
+        <h1>Flutter Web App - Cypress Testing Demo</h1>
+        <p>This is a sample Flutter web application for testing with Cypress</p>
+      </div>
+
+      <div class="nav">
+        <button data-testid="home-button" onclick="showPage('home')">Home</button>
+        <button data-testid="about-button" onclick="showPage('about')">About</button>
+        <button data-testid="form-page" onclick="showPage('form')">Form</button>
+        <button data-testid="list-page" onclick="showPage('list')">List</button>
+        <button data-testid="search-page" onclick="showPage('search')">Search</button>
+        <button data-testid="data-page" onclick="showPage('data')">Data</button>
+      </div>
+
+      <!-- Home Page -->
+      <div id="home" class="content page" data-testid="home-content">
+        <h2>Welcome to Flutter Web Testing</h2>
+        <p>This application demonstrates various Flutter web testing scenarios using Cypress.</p>
+        <button data-testid="open-modal-button" onclick="openModal()">Open Modal</button>
+        <button data-testid="trigger-error-button" onclick="triggerError()">Trigger Error</button>
+        <button data-testid="load-data-button" onclick="loadData()">Load Data</button>
+        
+        <!-- Error Message -->
+        <div id="error-message" class="error hidden" data-testid="error-message">
+          Something went wrong!
+          <button data-testid="retry-button" onclick="clearError()">Retry</button>
+        </div>
+
+        <!-- Success Message -->
+        <div id="success-message" class="success hidden" data-testid="success-message">
+          Operation completed successfully!
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" class="loading hidden" data-testid="loading-indicator">
+          <p>Loading...</p>
+        </div>
+
+        <!-- Data Content -->
+        <div id="data-content" class="hidden" data-testid="data-content">
+          <h3>Loaded Data</h3>
+          <p>This is the loaded data content.</p>
+        </div>
+      </div>
+
+      <!-- About Page -->
+      <div id="about" class="content page hidden" data-testid="about-content">
+        <h2>About This Application</h2>
+        <p>This is a demonstration of Flutter web testing with Cypress.</p>
+        <p>Author: Abdul Wahab (NUST)</p>
+      </div>
+
+      <!-- Form Page -->
+      <div id="form" class="content page hidden" data-testid="form-content">
+        <h2>Form Testing</h2>
+        <form id="test-form" onsubmit="return submitForm(event)">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" data-testid="first-name-input" required>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" data-testid="last-name-input" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" data-testid="email-input" required>
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <select data-testid="country-dropdown" required>
+              <option value="">Select Country</option>
+              <option value="us">United States</option>
+              <option value="ca">Canada</option>
+              <option value="uk">United Kingdom</option>
+            </select>
+          </div>
+          <button type="submit" class="btn" data-testid="submit-button">Submit</button>
+        </form>
+      </div>
+
+      <!-- List Page -->
+      <div id="list" class="content page hidden" data-testid="list-content">
+        <h2>List Testing</h2>
+        <div id="list-container" data-testid="list-container" style="max-height: 300px; overflow-y: auto;">
+          <div class="list-item" data-testid="list-item">Item 1</div>
+          <div class="list-item" data-testid="list-item">Item 2</div>
+          <div class="list-item" data-testid="list-item">Item 3</div>
+          <div class="list-item" data-testid="list-item">Item 4</div>
+          <div class="list-item" data-testid="list-item">Item 5</div>
+        </div>
+      </div>
+
+      <!-- Search Page -->
+      <div id="search" class="content page hidden" data-testid="search-content">
+        <h2>Search Testing</h2>
+        <div class="form-group">
+          <input type="text" data-testid="search-input" placeholder="Enter search term">
+          <button class="btn" data-testid="search-button" onclick="performSearch()">Search</button>
+        </div>
+        <div id="search-results" class="hidden" data-testid="search-results">
+          <h3>Search Results</h3>
+          <div class="list-item" data-testid="search-result-item">Result 1</div>
+          <div class="list-item" data-testid="search-result-item">Result 2</div>
+        </div>
+      </div>
+
+      <!-- Data Page -->
+      <div id="data" class="content page hidden" data-testid="data-content">
+        <h2>Data Loading Testing</h2>
+        <div id="user-list" class="hidden" data-testid="user-list">
+          <h3>Users</h3>
+          <div class="list-item" data-testid="user-item">John Doe</div>
+          <div class="list-item" data-testid="user-item">Jane Smith</div>
+          <div class="list-item" data-testid="user-item">Bob Johnson</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal" data-testid="modal-dialog">
+      <div class="modal-content">
+        <span class="close" data-testid="modal-close-button" onclick="closeModal()">&times;</span>
+        <h2>Modal Dialog</h2>
+        <div class="form-group">
+          <label>Modal Input</label>
+          <input type="text" data-testid="modal-input" placeholder="Enter text">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simulate Flutter Web environment
+    window.flutterCanvasKit = true;
+    
+    // Navigation functions
+    function showPage(pageId) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(page => page.classList.add('hidden'));
+      document.getElementById(pageId).classList.remove('hidden');
+      
+      // Simulate route change
+      history.pushState({}, '', `/${pageId === 'home' ? '' : pageId}`);
+    }
+
+    // Modal functions
+    function openModal() {
+      document.getElementById('modal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    // Error handling
+    function triggerError() {
+      document.getElementById('error-message').classList.remove('hidden');
+    }
+
+    function clearError() {
+      document.getElementById('error-message').classList.add('hidden');
+    }
+
+    // Data loading simulation
+    function loadData() {
+      const loading = document.getElementById('loading-indicator');
+      const content = document.getElementById('data-content');
+      
+      loading.classList.remove('hidden');
+      
+      setTimeout(() => {
+        loading.classList.add('hidden');
+        content.classList.remove('hidden');
+      }, 2000);
+    }
+
+    // Form submission
+    function submitForm(event) {
+      event.preventDefault();
+      
+      setTimeout(() => {
+        const success = document.getElementById('success-message');
+        success.classList.remove('hidden');
+        
+        setTimeout(() => {
+          success.classList.add('hidden');
+        }, 3000);
+      }, 500);
+      
+      return false;
+    }
+
+    // Search functionality
+    function performSearch() {
+      const results = document.getElementById('search-results');
+      results.classList.remove('hidden');
+    }
+
+    // Initial setup
+    window.addEventListener('DOMContentLoaded', function() {
+      showPage('home');
+    });
+  </script>
+</body>
+</html>

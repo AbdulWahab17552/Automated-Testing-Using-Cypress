@@ -1,0 +1,46 @@
+{
+  "name": "flutter-web-cypress-testing",
+  "version": "1.0.0",
+  "description": "Automated Testing Using Cypress for Flutter Web - Author: Abdul Wahab (NUST)",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run",
+    "test:open": "cypress open",
+    "test:headless": "cypress run --headless",
+    "test:chrome": "cypress run --browser chrome",
+    "test:firefox": "cypress run --browser firefox",
+    "test:edge": "cypress run --browser edge",
+    "test:mobile": "cypress run --config viewportWidth=375,viewportHeight=667",
+    "test:tablet": "cypress run --config viewportWidth=768,viewportHeight=1024",
+    "test:api": "cypress run --spec 'cypress/e2e/flutter-api-integration.cy.js'",
+    "test:ui": "cypress run --spec 'cypress/e2e/flutter-app.cy.js'",
+    "serve": "npx http-server ./web -p 8080",
+    "start": "npm run serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbdulWahab17552/Automated-Testing-Using-Cypress.git"
+  },
+  "keywords": [
+    "cypress",
+    "flutter",
+    "web",
+    "automation",
+    "testing",
+    "e2e",
+    "integration"
+  ],
+  "author": "Abdul Wahab (NUST)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AbdulWahab17552/Automated-Testing-Using-Cypress/issues"
+  },
+  "homepage": "https://github.com/AbdulWahab17552/Automated-Testing-Using-Cypress#readme",
+  "devDependencies": {
+    "@cypress/webpack-preprocessor": "^6.0.2",
+    "cypress": "^13.6.2",
+    "http-server": "^14.1.1",
+    "typescript": "^5.3.3",
+    "wait-on": "^8.0.3"
+  }
+}
