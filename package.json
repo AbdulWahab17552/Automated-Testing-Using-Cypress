@@ -1,0 +1,26 @@
+{
+  "name": "flutter-cypress-demo",
+  "version": "1.0.0",
+  "description": "Flutter web application with Cypress automation",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:run:headed": "cypress run --headed",
+    "test": "cypress run",
+    "build:web": "flutter build web",
+    "serve:web": "flutter run -d web-server --web-port 3000",
+    "test:all": "npm run build:web && npm run serve:web & sleep 10 && npm run cypress:run"
+  },
+  "devDependencies": {
+    "cypress": "^13.6.0",
+    "cypress-wait-until": "^1.7.2"
+  },
+  "keywords": [
+    "flutter",
+    "cypress",
+    "testing",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT"
+}

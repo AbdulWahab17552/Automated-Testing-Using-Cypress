@@ -1,0 +1,65 @@
+name: Flutter Web Cypress Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.0'
+        channel: 'stable'
+    
+    - name: Install Flutter dependencies
+      run: flutter pub get
+    
+    - name: Install Node.js dependencies
+      run: npm ci
+    
+    - name: Build Flutter web app
+      run: flutter build web
+    
+    - name: Start Flutter web server
+      run: |
+        flutter run -d web-server --web-port 3000 &
+        sleep 10
+      shell: bash
+    
+    - name: Run Cypress tests
+      uses: cypress-io/github-action@v6
+      with:
+        browser: chrome
+        headed: false
+        wait-on: 'http://localhost:3000'
+        wait-on-timeout: 120
+    
+    - name: Upload screenshots
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: cypress-screenshots
+        path: cypress/screenshots
+        if-no-files-found: ignore
+    
+    - name: Upload videos
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: cypress-videos
+        path: cypress/videos
+        if-no-files-found: ignore
