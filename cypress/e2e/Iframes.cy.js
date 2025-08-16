@@ -1,5 +1,6 @@
 import 'cypress-iframe';
-describe('handling iframes', () => {
+describe('handling iframes', () => 
+    {
     // it('approach1', () => {
     //     cy.visit('https://the-internet.herokuapp.com/iframe')
     //     const iframe = cy.get('#mce_0_ifr')
@@ -20,6 +21,7 @@ describe('handling iframes', () => {
         cy.frameLoaded('#mce_0_ifr')  //will load the frame//
         cy.getiframe('#mce_0_ifr').clear().type('Welcome to Pakistan{cmd+a}')
         cy.get("[aria-label='Bold']").click()
+        
     })
 
 })
