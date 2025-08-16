@@ -34,3 +34,28 @@ Cypress.Commands.add('getiframe',(iframe)=>{
          .should('be.visible')
          .then('cy.wrap');
 })
+
+// custom command for clicking on the link
+Cypress.Commands.add('clickLink',(label)=>{
+cy.get('a').contains(label).click()
+
+})
+Cypress.Commands.overwriteQuery('contains', (originalFn, subject, filter, text, options = {}) => {
+  // determine if a filter argument was passed
+  if (typeof text === 'object') {
+    options = text
+    text = filter
+    filter = undefined
+  }
+
+  options.matchCase = false
+
+  return originalFn(subject, filter, text, options)
+})
+
+// Custom Login Command
+Cypress.Commands.add('LoginApp',(Username,Password)=>{
+       cy.get(':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-input').type(Username)
+       cy.get(':nth-child(3) > .oxd-input-group > :nth-child(2) > .oxd-input').type(Password)
+      cy.get('.oxd-button').click()
+})

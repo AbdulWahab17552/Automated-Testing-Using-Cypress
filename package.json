@@ -10,7 +10,10 @@
   "description": "",
   "devDependencies": {
     "cypress": "^14.5.1",
+    "cypress-drag-drop": "^1.1.1",
+    "cypress-file-upload": "^5.0.8",
     "cypress-iframe": "^1.0.1",
+    "cypress-mochawesome-reporter": "^4.0.0",
     "cypress-xpath": "^2.0.1"
   }
 }
